@@ -42,7 +42,33 @@ function checksCreateTodosUserAvailability(request, response, next) {
 }
 
 function checksTodoExists(request, response, next) {
-  // Complete aqui
+  const { id } = request.params;
+  const { username } = request.headers;
+
+if(!validate(id)){
+  return response.status(400).json({error: 'account not found'})
+ }
+
+ if(!username){
+  return response.status(400).json({error: 'account not found'})
+ }
+
+
+ const userAlreadyExist = users.find((currentUser) => currentUser.username === username);
+
+ if(!userAlreadyExist){
+  return response.status(404).json({error: 'account not found'})
+ }
+
+ const todo = userAlreadyExist.todos.find(currentTodo => currentTodo.id === id);
+ if(!todo){
+  return response.status(404).json({error: 'account not found'})
+ }
+
+  request.user = userAlreadyExist;
+  request.todo = todo;
+ return next();
+
 }
 
 function findUserById(request, response, next) {

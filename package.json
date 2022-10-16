@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon",
     "test": "jest",
-    "test:unit": "jest --watchAll --colors --noStackTrace --findRelatedTests ./src/**.js"
+    "test:unit": "jest --watchAll --colors --noStackTrace --detectOpenHandles --findRelatedTests ./src/**.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
