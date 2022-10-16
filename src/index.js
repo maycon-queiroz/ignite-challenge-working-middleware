@@ -13,7 +13,7 @@ function checksExistsUserAccount(request, response, next) {
   const { username } = request.headers;
 
   if(!username){
-    return response.status(404).json({ error: 'Username not found' });
+    return response.status(400).json({ error: 'Username not found' });
   }
 
   const userAlreadyExist = users.find((currentUser) => currentUser.username === username);
@@ -28,7 +28,17 @@ function checksExistsUserAccount(request, response, next) {
 }
 
 function checksCreateTodosUserAvailability(request, response, next) {
-  // Complete aqui
+  const { user } = request;
+
+  const { todos, pro } = user;
+
+  if(todos.length >= 10 && pro === false ){
+    return response.status(403).json({error: 'unauthorized'});
+  }
+
+ request.user = user;
+  return next()
+
 }
 
 function checksTodoExists(request, response, next) {
