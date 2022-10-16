@@ -45,34 +45,45 @@ function checksTodoExists(request, response, next) {
   const { id } = request.params;
   const { username } = request.headers;
 
-if(!validate(id)){
-  return response.status(400).json({error: 'account not found'})
- }
+  if(!validate(id)){
+    return response.status(400).json({error: 'account not found'})
+  }
 
- if(!username){
-  return response.status(400).json({error: 'account not found'})
- }
+  if(!username){
+    return response.status(400).json({error: 'account not found'})
+  }
 
 
- const userAlreadyExist = users.find((currentUser) => currentUser.username === username);
+  const userAlreadyExist = users.find((currentUser) => currentUser.username === username);
 
- if(!userAlreadyExist){
-  return response.status(404).json({error: 'account not found'})
- }
+  if(!userAlreadyExist){
+    return response.status(404).json({error: 'account not found'})
+  }
 
- const todo = userAlreadyExist.todos.find(currentTodo => currentTodo.id === id);
- if(!todo){
-  return response.status(404).json({error: 'account not found'})
- }
+  const todo = userAlreadyExist.todos.find(currentTodo => currentTodo.id === id);
+  if(!todo){
+    return response.status(404).json({error: 'account not found'})
+  }
 
   request.user = userAlreadyExist;
   request.todo = todo;
- return next();
+  return next();
 
 }
 
 function findUserById(request, response, next) {
-  // Complete aqui
+  const { id } = request.params;
+  
+  if( !id ){
+    return response.status(404).json({error: 'account not found'})
+  }
+
+  const user = users.find((currentUser) => currentUser.id === id);
+  if( !user ){
+    return response.status(404).json({error: 'account not found'})
+  }
+  request.user = user;
+  return next();
 }
 
 app.post('/users', (request, response) => {
